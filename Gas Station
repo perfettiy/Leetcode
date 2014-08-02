@@ -1,0 +1,26 @@
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int N=gas.length;
+        if(gas.length!=cost.length) 
+            return -1;
+        int[] diff= new int[N];
+        int sum=0;
+        int start=0;
+        int re=0;
+        for(int i=0;i<N;i++){
+            diff[i]=gas[i]-cost[i];
+            sum+=diff[i];
+            re+=diff[i];
+            if(sum<0){
+                sum=0;
+                start=i+1;
+            }
+        }
+        if(re>=0)
+            return start;
+        else
+            return -1;
+    
+        
+    }
+}

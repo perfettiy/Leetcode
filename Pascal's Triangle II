@@ -1,0 +1,19 @@
+public class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        int[] a = new int[rowIndex+1];
+        int k=rowIndex;
+        for(int i=0;i<=k;i++){
+            a[0]=1;
+            for(int j=k-1;j>=1;j--){
+                a[j]=a[j-1]+a[j];
+            }
+            a[i]=1;
+        }
+    List<Integer> list = new ArrayList<Integer>();
+    for(int i=0;i<=k;i++){
+        list.add(a[i]);
+    }
+    
+    return list;
+}
+}

@@ -1,0 +1,46 @@
+public class Solution {
+    public List<String> wordBreak(String s, Set<String> dict) {
+    	
+    	List<String> list= new ArrayList<String>();
+    	StringBuilder sb= new StringBuilder();
+    	
+    	if(s.length()==0||dict.size()==0) return list;
+       
+        s="#"+s;
+        int n=s.length();
+        boolean[] possible = new boolean[n];
+       possible[0]=true;
+        
+        for(int i=1;i<n;i++){
+            for(int k=0;k<i;k++){          
+                possible[i]=(possible[k]&&dict.contains(s.substring(k+1, i+1)));
+                if(possible[i]) break;
+            }
+        }
+      
+        if(possible[n-1]==false) return list;
+        dfs(1,s, dict, list, sb);
+        return list;     
+    }
+    
+     public  void dfs(int start, String s, Set<String> dict, List<String> list, StringBuilder sb){
+    	if(start==s.length()){
+    		list.add(sb.toString());
+    		return;
+    	}
+    	for(int i=start; i<s.length();i++){
+    		if(dict.contains(s.substring(start, i+1))){
+    		    int oldLen=sb.length();
+    			
+    			if(oldLen!=0) 
+    			    sb.append(" ");
+    			sb.append(s.substring(start,i+1));
+    			dfs(i+1, s, dict, list, sb);
+    			sb.delete(oldLen, sb.length());
+    			
+    		}
+    	}
+     
+        
+    }
+}

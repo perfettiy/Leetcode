@@ -1,0 +1,121 @@
+import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.HashMap;
+
+
+
+public class Solution {
+    public class Node{
+	String value;
+	int level;
+	public Node(String v, int l){
+		value=v;
+		level=l;
+	}
+}
+
+    public  ArrayList<ArrayList<String>> findLadders(String start, String end, HashSet<String> dict) {
+        dict.add(start);
+        dict.add(end);
+        int m=dict.size();
+        HashMap<String, HashSet<String>> neighbors = new HashMap<String, HashSet<String>>(m);
+        for(String word:dict){
+        	HashSet<String> wordSet=new HashSet<String>();
+        	char[] ch=word.toCharArray();
+        	for(int i=0;i<word.length();i++){
+        		char c=ch[i];
+        		for(char j='a';j<'z';j++){
+        			if(ch[i]!=j){
+        				ch[i]=j;
+        				String str=new String(ch);
+        				if(dict.contains(str)){
+        					wordSet.add(str);
+        				}
+        		}
+        	    ch[i]=c;
+        	}
+        }
+    	neighbors.put(word, wordSet);
+        }
+
+    	
+        Queue<Node> q = new LinkedList<Node>();
+        HashSet<String> visited= new HashSet<String>(m);
+      
+        q.add(new Node(start, 0));
+        visited.add(start);
+        
+        HashMap<String, Integer> minDist= new HashMap<String, Integer>(m);
+        for(String w:dict){
+        	minDist.put(w, Integer.MAX_VALUE);
+        }
+        
+        HashMap<String,HashSet<String>> parent= new HashMap<String, HashSet<String>>(m);
+        for(String w:dict){
+        	parent.put(w, new HashSet<String>());
+        }
+        while(!q.isEmpty()){
+        	Node t=q.poll();
+        	for(String s:neighbors.get(t.value)){
+        		int newDist=t.level+1;
+        		
+        		int oldDist=minDist.get(s);
+        		if(newDist<oldDist){
+        			parent.get(s).clear();
+        			parent.get(s).add(t.value);
+        			minDist.put(s, newDist);
+        		}else if(newDist==oldDist){
+        			parent.get(s).add(t.value);
+        		}if(!visited.contains(s)){
+        			q.add(new Node(s, newDist));
+        			visited.add(s);
+        		}
+        	}
+        }
+        // for(String w:dict)
+        // 	System.out.println(w+" "+parent.get(w));
+        
+        int n=minDist.get(end);
+        //System.out.println(n);
+        int size=n+1;
+        ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
+        ArrayList<String> list = new ArrayList<String> ();
+        if(n==Integer.MAX_VALUE){
+        	return result;
+        }else{
+        	dfs(end, 0, size, result, list, parent );
+        	return result; 	
+        }
+    }
+        public void dfs(String cur, int step, int size, ArrayList<ArrayList<String>> result, ArrayList<String> list, HashMap<String,HashSet<String>> parent){
+        	list.add(cur);
+        //	System.out.println(cur);
+            step++;
+        	
+        	if(step==size){
+        		 result.add(inverseList(list));
+        	
+        	}else{
+        	for(String p: parent.get(cur)){
+        		dfs(p, step, size, result, list, parent);
+       
+        	}
+        	}
+        		step--;
+        		list.remove(step);
+                }
+        	
+        
+        public ArrayList<String> inverseList(ArrayList<String> a) {
+        	int n=a.size();
+        	ArrayList<String> result= new ArrayList<String>();
+        	for(int i=n-1;i>=0;i--){
+        		result.add(a.get(i));
+        	}
+        	return result;
+        	}
+}

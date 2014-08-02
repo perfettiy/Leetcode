@@ -1,0 +1,22 @@
+
+     public class Solution {
+    public int minimumTotal(ArrayList<ArrayList<Integer>> triangle) {
+       int row = triangle.size();
+       if(row==0) return 0;
+       int[] M= new int[triangle.get(row-1).size()];
+       for( int i=row-1; i>=0;i--){
+           int col=triangle.get(i).size();
+           for(int j=0;j<col;j++){
+               if(i==row-1){
+                   M[j]=triangle.get(i).get(j);
+               }else{
+               M[j]=triangle.get(i).get(j)+Math.min(M[j],M[j+1]);
+               }
+               
+           }
+       }
+       
+       return M[0];
+}   
+    
+     }

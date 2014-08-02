@@ -1,0 +1,38 @@
+public class Solution {
+    public ArrayList<ArrayList<String>> partition(String s) {
+        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<ArrayList<String>> lists=new ArrayList<ArrayList<String>>();
+        partition(s,0, list, lists);
+        return lists;
+        
+        
+    }
+    
+    public void partition(String s, int start, ArrayList<String> list, ArrayList<ArrayList<String>> lists){
+        if(start==s.length()){
+            lists.add(new ArrayList<String>(list));
+            return;
+        }
+        for(int i=start+1;i<=s.length();i++){
+            String word=s.substring(start,i);
+            if(isPalindrom(word)){
+                list.add(word);
+                partition(s, i, list, lists);
+                list.remove(list.size()-1);
+            }
+        }
+    }
+
+    public boolean isPalindrom(String s){
+        int i=0; int j=s.length()-1;
+        while(i<j){
+            if(s.charAt(i)!=s.charAt(j)){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+    
+    }

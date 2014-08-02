@@ -1,0 +1,18 @@
+public class Solution {
+    public boolean wordBreak(String s, Set<String> dict) {
+        if(s==null||s.length()==0) return false;
+        s="#"+s;
+        int n=s.length();
+        
+        boolean[] dp= new boolean[n+1];
+        dp[0]=true;
+        for(int i=1;i<n;i++)
+            for(int k=0;k<i;k++){
+                dp[i]=dp[k]&&dict.contains(s.substring(k+1,i+1));
+                if(dp[i]) break;
+                
+            }
+        return dp[n-1];
+            
+    }
+}
